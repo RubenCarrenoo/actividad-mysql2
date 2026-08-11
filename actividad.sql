@@ -38,3 +38,27 @@ CALL stock_categoria('electricas', @total);
 SELECT @total;
 
 
+DELIMITER // 
+ 
+CREATE PROCEDURE agregar_puntos( 
+    IN p_id_compra INT, 
+    INOUT p_total INT 
+) 
+BEGIN 
+    DECLARE v_puntos INT; 
+ 
+    SELECT puntos_generados 
+    INTO v_puntos 
+    FROM compras 
+    WHERE id = p_id_compra; 
+ 
+    SET p_total = p_total + v_puntos; 
+END // 
+ 
+DELIMITER ; 
+ 
+SET @total = 0; 
+ 
+CALL agregar_puntos(1, @total); 
+CALL agregar_puntos(2, @total)
+
